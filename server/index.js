@@ -13,12 +13,14 @@ app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 
 const { initCron } = require("./services/automationService");
+const { initAgentCron } = require("./ai-agent/scheduler");
 
 mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/aicollection");
 
 mongoose.connection.once("open", () => {
     console.log("MongoDB Connected");
     initCron(); // Start the daily automation cron job
+    initAgentCron(); // Start the AI Agent chronological job
 });
 
 app.use("/api/auth", require("./routes/authRoutes"));

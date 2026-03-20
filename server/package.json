@@ -11,6 +11,8 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
+    "axios": "^1.13.6",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
@@ -18,10 +20,12 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.1",
     "node-cron": "^4.2.1",
-    "nodemailer": "^8.0.1",
+    "nodemailer": "^8.0.2",
     "openai": "^6.24.0",
     "pdfkit": "^0.17.2",
-    "stripe": "^20.3.1"
+    "socket.io": "^4.8.3",
+    "stripe": "^20.3.1",
+    "twilio": "^5.13.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

@@ -11,6 +11,8 @@ import {
     AreaChart,
     Area
 } from "recharts";
+import AiActions from "../components/AiActions";
+import AiVoiceCalls from "../components/AiVoiceCalls";
 
 
 
@@ -221,6 +223,9 @@ export default function Dashboard() {
                     </table>
                 </div>
             </div>
+
+            <AiActions />
+            <AiVoiceCalls />
         </div>
     );
 }

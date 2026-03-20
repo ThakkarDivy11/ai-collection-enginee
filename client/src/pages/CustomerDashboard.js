@@ -140,7 +140,17 @@ export default function CustomerDashboard() {
     const totalDue = invoices.filter(i => i.status === "unpaid" || i.status === "overdue").reduce((acc, curr) => acc + curr.amount, 0);
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-200">
+        <div className="min-h-screen bg-slate-950 text-slate-200 relative overflow-hidden">
+            {/* Video Background */}
+            <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover z-0 opacity-20"
+            >
+                <source src="/ai.mp4" type="video/mp4" />
+            </video>
             {/* Header */}
             <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10">
                 <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
@@ -166,7 +176,7 @@ export default function CustomerDashboard() {
                 </div>
             </header>
 
-            <main className="max-w-7xl mx-auto px-4 py-10 space-y-8">
+            <main className="max-w-7xl mx-auto px-4 py-10 space-y-8 relative z-10">
                 {alert && (
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
