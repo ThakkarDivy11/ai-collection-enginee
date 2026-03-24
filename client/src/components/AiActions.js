@@ -32,8 +32,6 @@ const AiActions = () => {
             case "email":
             case "friendly":
                 return "bg-blue-100 text-blue-800";
-            case "whatsapp":
-                return "bg-green-100 text-green-800";
             case "call":
             case "escalate":
                 return "bg-purple-100 text-purple-800";

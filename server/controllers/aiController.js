@@ -392,3 +392,58 @@ exports.getRiskScore = async (invoiceData) => {
         return { riskScore: 50, reason: "Error contacting AI service." };
     }
 };
+
+exports.classifyClientStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const client = await Client.findById(id);
+        if (!client) return res.status(404).json({ message: "Client not found" });
+
+        // Calculate last active days
+        const lastActiveDate = client.lastActive || client.updatedAt || new Date();
+        const diffTime = Math.abs(new Date() - new Date(lastActiveDate));
+        const lastActiveDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        // Check for pending payments
+        const pendingInvoices = await Invoice.find({
+            clientId: id,
+            status: { $in: ["unpaid", "overdue"] }
+        });
+        const paymentStatus = pendingInvoices.length > 0 ? "Pending" : "Paid";
+
+        // Usage Level
+        const usageLevel = client.usageLevel || "medium";
+
+        const prompt = `Analyze the user data and classify the user into one of these:
+- ACTIVE
+- CHURN_RISK
+
+Rules:
+- If user inactive > 7 days → CHURN_RISK
+- If payment pending → CHURN_RISK
+- If usage low → CHURN_RISK
+
+Return ONLY one word: ACTIVE or CHURN_RISK
+
+User Data:
+Last Active: ${lastActiveDays} days ago
+Payment Status: ${paymentStatus}
+Usage Level: ${usageLevel}`;
+
+        console.log(`Classifying status for client ${client.name}...`);
+        const response = await openai.chat.completions.create({
+            model: process.env.AI_MODEL || "llama3",
+            messages: [{ role: "user", content: prompt }],
+        });
+
+        const result = response.choices[0].message.content.trim().toUpperCase();
+        
+        // Sanitize response to ensure it's exactly one of the words
+        const finalStatus = result.includes("CHURN_RISK") ? "CHURN_RISK" : "ACTIVE";
+
+        res.json({ clientName: client.name, classification: finalStatus, lastActiveDays, paymentStatus, usageLevel });
+    } catch (error) {
+        console.error("Client classification error:", error.message);
+        res.status(500).json({ message: error.message });
+    }
+};

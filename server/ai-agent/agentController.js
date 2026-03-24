@@ -6,7 +6,6 @@ const ConversationMemory = require("../models/ConversationMemory");
 const { decideAction } = require("./decisionEngine");
 const {
     sendEmailReminder,
-    sendWhatsAppReminder,
     triggerVoiceCall,
     updateInvoiceStatus,
     scheduleNextReminder,
@@ -37,15 +36,6 @@ const runAgentCycle = async (req, res) => {
             if (decision.action === "friendly" || decision.action === "email") {
                 toolResult = await sendEmailReminder(client.email, decision.message);
                 finalActionEnum = "email";
-            } else if (decision.action === "whatsapp") {
-                if (client.phone) {
-                    toolResult = await sendWhatsAppReminder(client.phone, decision.message);
-                    finalActionEnum = "whatsapp";
-                } else {
-                    // Fallback to email if no phone
-                    toolResult = await sendEmailReminder(client.email, decision.message);
-                    finalActionEnum = "email";
-                }
             } else if (decision.action === "escalate") {
                 // Trigger AI voice call + mark invoice overdue
                 if (client.phone) {
@@ -150,13 +140,9 @@ const manualSendReminder = async (req, res) => {
         const client = invoice.clientId;
         const decision = await decideAction(invoice, client); // Generate dynamic text based on current delays
 
-        if (type === "whatsapp") {
-            await sendWhatsAppReminder(client.phone, decision.message);
-        } else {
-            await sendEmailReminder(client.email, decision.message);
-        }
+        await sendEmailReminder(client.email, decision.message);
 
-        const logType = type === "whatsapp" ? "whatsapp" : "email";
+        const logType = "email";
 
         const actionLog = new AiAction({
             invoiceId: invoice._id,

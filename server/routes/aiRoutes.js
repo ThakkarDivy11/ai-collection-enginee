@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { generateInsights, generateEmail, smartSearch, sendAiEmail, getAiAnalytics, generateChurnPrediction } = require("../controllers/aiController");
+const { generateInsights, generateEmail, smartSearch, sendAiEmail, getAiAnalytics, generateChurnPrediction, classifyClientStatus } = require("../controllers/aiController");
 const { runAgentCycle, getAiActionsLog, manualSendReminder, getAiVoiceCalls } = require("../ai-agent/agentController");
 const { negotiatePaymentPlan } = require("../ai-agent/negotiationAgent");
 const { protect, admin } = require("../middleware/authMiddleware");
@@ -19,5 +19,6 @@ router.get("/actions", getAiActionsLog);       // Dashboard logs
 router.post("/send-reminder", manualSendReminder); // Manual override
 router.get("/voice-calls", getAiVoiceCalls);   // Voice call logs
 router.post("/negotiate", negotiatePaymentPlan); // AI Negotiation
+router.post("/classify/:id", protect, admin, classifyClientStatus); // User Classification
 
 module.exports = router;

@@ -2,7 +2,7 @@ const axios = require("axios");
 const Invoice = require("../models/Invoice");
 const VoiceCallLog = require("../models/VoiceCallLog");
 
-// ─── Twilio (WhatsApp + Voice) ─────────────────────────────────────────────
+// ─── Twilio (Voice) ──────────────────────────────────────────────────────────
 const twilio = require("twilio");
 const twilioClient = (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN)
     ? twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
@@ -44,32 +44,6 @@ const sendEmailReminder = async (customerEmail, message) => {
     }
 };
 
-// ─── WhatsApp Reminder ─────────────────────────────────────────────────────
-/**
- * Send a WhatsApp message via Twilio sandbox (falls back to console mock)
- * @returns {{ success: boolean, actionStatus: "sent"|"failed" }}
- */
-const sendWhatsAppReminder = async (customerPhone, message) => {
-    console.log(`[WhatsApp] Sending to ${customerPhone}`);
-    try {
-        if (!twilioClient) {
-            console.log(`[WhatsApp Mock] To: ${customerPhone}\n${message}`);
-            return { success: true, actionStatus: "sent", tool: "whatsapp" };
-        }
-
-        await twilioClient.messages.create({
-            body: message,
-            from: process.env.TWILIO_WHATSAPP_NUMBER || "whatsapp:+14155238886",
-            to: `whatsapp:${customerPhone}`,
-        });
-
-        console.log(`[WhatsApp] Sent successfully to ${customerPhone}`);
-        return { success: true, actionStatus: "sent", tool: "whatsapp" };
-    } catch (error) {
-        console.error("[WhatsApp] Failed:", error.message);
-        return { success: false, actionStatus: "failed", tool: "whatsapp", error: error.message };
-    }
-};
 
 // ─── AI Voice Call ─────────────────────────────────────────────────────────
 /**
@@ -164,7 +138,6 @@ const scheduleNextReminder = async (invoiceId) => {
 
 module.exports = {
     sendEmailReminder,
-    sendWhatsAppReminder,
     triggerVoiceCall,
     updateInvoiceStatus,
     scheduleNextReminder,

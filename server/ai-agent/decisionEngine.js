@@ -14,8 +14,6 @@ Write a short, polite message to a customer named ${customerName} reminding them
         prompt += " Keep the tone very gentle, as they might have just forgotten.";
     } else if (actionType === "email") {
         prompt += " Keep it professional but clear that the payment is required soon.";
-    } else if (actionType === "whatsapp") {
-        prompt += " Make it concise for WhatsApp, but firm since it is quite late.";
     } else {
         prompt += " Make it formal and state that the account may face suspension if not resolved.";
     }
@@ -50,10 +48,8 @@ const decideAction = async (invoice, client) => {
     let actionType = "";
     if (daysOverdue < 3) {
         actionType = "friendly"; 
-    } else if (daysOverdue >= 3 && daysOverdue <= 7) {
+    } else if (daysOverdue >= 3 && daysOverdue <= 10) {
         actionType = "email";
-    } else if (daysOverdue > 7 && daysOverdue <= 15) {
-        actionType = "whatsapp";
     } else {
         actionType = "escalate";
     }
