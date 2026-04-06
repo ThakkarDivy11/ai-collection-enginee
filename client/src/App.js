@@ -8,12 +8,16 @@ import CustomerDashboard from "./pages/CustomerDashboard";
 import Settings from "./pages/Settings";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DemoOne from "./pages/demo";
+import ShaderDemo from "./pages/ShaderDemo";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
 
         <Route path="/dashboard" element={
           <ProtectedRoute>
@@ -50,6 +54,9 @@ function App() {
             <CustomerDashboard />
           </ProtectedRoute>
         } />
+
+        <Route path="/demo" element={<DemoOne />} />
+        <Route path="/shader-demo" element={<ShaderDemo />} />
       </Routes>
     </BrowserRouter>
   );

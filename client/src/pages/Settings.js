@@ -7,7 +7,6 @@ import {
     Globe,
     Mail,
     Lock,
-    CreditCard,
     Save,
     Sparkles,
     CheckCircle2

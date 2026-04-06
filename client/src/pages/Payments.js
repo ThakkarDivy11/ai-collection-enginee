@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { CreditCard, Download, Search, Plus, X, Loader2, Calendar, IndianRupee, Hash } from "lucide-react";
+import { Download, Search, Plus, X, Loader2, Calendar, IndianRupee, Hash } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Payments() {

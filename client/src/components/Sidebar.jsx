@@ -27,9 +27,9 @@ const Sidebar = () => {
     };
 
     return (
-        <div className="w-64 h-screen bg-slate-900 text-white flex flex-col fixed left-0 top-0 hidden md:flex border-r border-slate-800">
+        <div className="w-64 h-screen bg-white/70 dark:bg-black/40 backdrop-blur-xl border-r border-gray-200 dark:border-white/10 text-gray-900 dark:text-white flex flex-col fixed left-0 top-0 hidden md:flex transition-colors duration-300">
             <div className="p-6 flex items-center gap-3">
-                <BrainCircuit className="text-blue-400 w-8 h-8" />
+                <BrainCircuit className="text-blue-500 dark:text-blue-400 w-8 h-8" />
                 <span className="text-xl font-bold tracking-tight">CollectAI</span>
             </div>
 
@@ -41,8 +41,8 @@ const Sidebar = () => {
                             <motion.div
                                 whileHover={{ x: 5 }}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive
-                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-900/40"
-                                    : "text-slate-400 hover:text-white hover:bg-slate-800"
+                                    ? "bg-blue-600 text-white shadow-md shadow-blue-600/30 dark:shadow-blue-900/40"
+                                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5"
                                     }`}
                             >
                                 <item.icon size={20} />
@@ -53,10 +53,10 @@ const Sidebar = () => {
                 })}
             </nav>
 
-            <div className="p-4 border-t border-slate-800">
+            <div className="p-4 border-t border-gray-200 dark:border-white/10 mt-auto">
                 <button
                     onClick={logout}
-                    className="flex items-center gap-3 px-4 py-3 w-full text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-xl transition-all"
+                    className="flex items-center gap-3 px-4 py-3 w-full text-gray-600 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors duration-300"
                 >
                     <LogOut size={20} />
                     <span className="font-medium">Logout</span>

@@ -13,25 +13,41 @@ import {
     ArrowRight
 } from "lucide-react";
 import { motion } from "framer-motion";
+import ShaderBackground from "../components/ui/shader-background";
 
 export default function CustomerDashboard() {
     const [invoices, setInvoices] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [processingId, setProcessingId] = useState(null);
-    const user = JSON.parse(localStorage.getItem("customer"));
+    const user = React.useMemo(() => JSON.parse(localStorage.getItem("customer")), []);
 
     const fetchInvoices = useCallback(async () => {
-        if (!user?.id) return;
+        if (!user?.id) {
+            setLoading(false);
+            return;
+        }
         setLoading(true);
+        setError(null);
         try {
             const token = localStorage.getItem("token");
+            if (!token) {
+                setError("Session expired. Please log in again.");
+                setLoading(false);
+                return;
+            }
             const res = await fetch("http://localhost:5000/api/invoices/my-invoices", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
+            if (!res.ok) {
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.message || `Server error ${res.status}`);
+            }
             const data = await res.json();
-            setInvoices(data || []);
+            setInvoices(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Failed to fetch invoices", error);
+            setError(error.message || "Failed to load invoices. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -43,7 +59,7 @@ export default function CustomerDashboard() {
             return;
         }
         fetchInvoices();
-    }, [fetchInvoices]);
+    }, [fetchInvoices, user]);
 
     const [alert, setAlert] = useState(null);
 
@@ -141,16 +157,8 @@ export default function CustomerDashboard() {
 
     return (
         <div className="min-h-screen bg-slate-950 text-slate-200 relative overflow-hidden">
-            {/* Video Background */}
-            <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover z-0 opacity-20"
-            >
-                <source src="/ai.mp4" type="video/mp4" />
-            </video>
+            {/* Shader Background */}
+            <ShaderBackground />
             {/* Header */}
             <header className="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-10">
                 <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
@@ -276,6 +284,20 @@ export default function CustomerDashboard() {
                                         <tr>
                                             <td colSpan="5" className="py-20 text-center">
                                                 <Loader2 className="mx-auto animate-spin text-blue-500" size={32} />
+                                                <p className="text-slate-500 text-sm mt-3">Loading your invoices...</p>
+                                            </td>
+                                        </tr>
+                                    ) : error ? (
+                                        <tr>
+                                            <td colSpan="5" className="py-20 text-center">
+                                                <AlertCircle className="mx-auto text-rose-400 mb-3" size={32} />
+                                                <p className="text-rose-400 font-medium text-sm">{error}</p>
+                                                <button
+                                                    onClick={fetchInvoices}
+                                                    className="mt-4 text-blue-400 hover:text-blue-300 text-sm font-medium underline"
+                                                >
+                                                    Try again
+                                                </button>
                                             </td>
                                         </tr>
                                     ) : invoices.length === 0 ? (
@@ -354,9 +376,9 @@ export default function CustomerDashboard() {
                 <div className="flex flex-col sm:flex-row items-center justify-between text-slate-500 text-sm py-4">
                     <p>© 2026 Admin Systems • Secure Billing Portal</p>
                     <div className="flex items-center gap-6 mt-4 sm:mt-0">
-                        <a href="#" className="hover:text-blue-400 transition-colors font-medium">Privacy Policy</a>
-                        <a href="#" className="hover:text-blue-400 transition-colors font-medium">Terms of Service</a>
-                        <a href="#" className="hover:text-blue-400 transition-colors font-medium">FAQ</a>
+                        <a href="#!" className="hover:text-blue-400 transition-colors font-medium">Privacy Policy</a>
+                        <a href="#!" className="hover:text-blue-400 transition-colors font-medium">Terms of Service</a>
+                        <a href="#!" className="hover:text-blue-400 transition-colors font-medium">FAQ</a>
                     </div>
                 </div>
             </main>

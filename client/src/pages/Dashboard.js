@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CreditCard, Users, IndianRupee, Activity, TrendingUp, TrendingDown, Clock, Search, ExternalLink, Calendar, CheckCircle2, ArrowUpRight, ArrowDownRight, Loader2 } from "lucide-react";
+import { Users, IndianRupee, Activity, Clock, ArrowUpRight, ArrowDownRight, Loader2 } from "lucide-react";
 import {
     BarChart,
     Bar,
@@ -17,7 +17,7 @@ import AiVoiceCalls from "../components/AiVoiceCalls";
 
 
 const StatCard = ({ title, value, icon: Icon, trend, trendValue, color, loading }) => (
-    <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl relative overflow-hidden">
+    <div className="bg-white/70 dark:bg-white/10 backdrop-blur-xl border border-black/10 dark:border-white/10 p-6 rounded-2xl relative overflow-hidden transition-colors duration-300">
         <div className="flex justify-between items-start mb-4">
             <div className={`p-3 rounded-xl ${color}`}>
                 <Icon size={24} className="text-white" />
@@ -29,11 +29,11 @@ const StatCard = ({ title, value, icon: Icon, trend, trendValue, color, loading 
                 </div>
             )}
         </div>
-        <h3 className="text-slate-400 font-medium mb-1">{title}</h3>
+        <h3 className="text-gray-500 dark:text-slate-400 font-medium mb-1">{title}</h3>
         {loading ? (
-            <div className="h-8 w-24 bg-slate-800 animate-pulse rounded-lg"></div>
+            <div className="h-8 w-24 bg-gray-200 dark:bg-slate-800 animate-pulse rounded-lg"></div>
         ) : (
-            <p className="text-2xl font-bold text-white">{value}</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
         )}
     </div>
 );
@@ -89,8 +89,8 @@ export default function Dashboard() {
                         <button onClick={() => setAlert(null)} className="ml-auto text-current opacity-50 hover:opacity-100">&times;</button>
                     </div>
                 )}
-                <h1 className="text-3xl font-bold text-white mb-2">Welcome Back, Admin</h1>
-                <p className="text-slate-400">Here's what's happening with your clients today.</p>
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back, Admin</h1>
+                <p className="text-gray-500 dark:text-slate-400">Here's what's happening with your clients today.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -133,8 +133,8 @@ export default function Dashboard() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-                    <h3 className="text-xl font-bold text-white mb-6">Revenue Overview</h3>
+                <div className="bg-white/70 dark:bg-white/10 backdrop-blur-xl border border-black/10 dark:border-white/10 p-6 rounded-2xl transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Revenue Overview</h3>
                     <div className="h-80 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={stats?.chartData || []}>
@@ -157,8 +157,8 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
-                    <h3 className="text-xl font-bold text-white mb-6">Client Growth</h3>
+                <div className="bg-white/70 dark:bg-white/10 backdrop-blur-xl border border-black/10 dark:border-white/10 p-6 rounded-2xl transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Client Growth</h3>
                     <div className="h-80 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={stats?.chartData || []}>
@@ -176,22 +176,22 @@ export default function Dashboard() {
                 </div>
             </div>
 
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
-                <div className="p-6 border-b border-slate-800 flex justify-between items-center">
-                    <h3 className="text-xl font-bold text-white">Recent Clients</h3>
+            <div className="bg-white/70 dark:bg-white/10 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-2xl overflow-hidden shadow-2xl transition-colors duration-300">
+                <div className="p-6 border-b border-gray-200 dark:border-slate-800 flex justify-between items-center">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">Recent Clients</h3>
                     <button className="text-blue-400 hover:text-blue-300 text-sm font-medium">View all</button>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
-                            <tr className="bg-slate-800/50 text-slate-400 text-xs font-bold uppercase tracking-wider">
+                            <tr className="bg-gray-100/50 dark:bg-slate-800/50 text-gray-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
                                 <th className="px-8 py-4">Client</th>
                                 <th className="px-8 py-4">Status</th>
                                 <th className="px-8 py-4">Revenue</th>
                                 <th className="px-8 py-4">Date</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-800">
+                        <tbody className="divide-y divide-gray-200 dark:divide-slate-800">
                             {loading ? (
                                 <tr>
                                     <td colSpan="4" className="py-12 text-center">
@@ -200,13 +200,13 @@ export default function Dashboard() {
                                 </tr>
                             ) : !stats?.recentClients || stats?.recentClients.length === 0 ? (
                                 <tr>
-                                    <td colSpan="4" className="py-12 text-center text-slate-500">No clients found.</td>
+                                    <td colSpan="4" className="py-12 text-center text-gray-500 dark:text-slate-500">No clients found.</td>
                                 </tr>
                             ) : stats?.recentClients.map((client, idx) => (
-                                <tr key={idx} className="hover:bg-slate-800/30 transition-colors group">
+                                <tr key={idx} className="hover:bg-gray-50/50 dark:hover:bg-slate-800/30 transition-colors group">
                                     <td className="px-8 py-5">
-                                        <div className="font-bold text-white group-hover:text-blue-400 transition-colors">{client.name}</div>
-                                        <div className="text-slate-500 text-xs font-medium uppercase tracking-tight">{client.company}</div>
+                                        <div className="font-bold text-gray-900 dark:text-white group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">{client.name}</div>
+                                        <div className="text-gray-500 dark:text-slate-500 text-xs font-medium uppercase tracking-tight">{client.company}</div>
                                     </td>
                                     <td className="px-8 py-5">
                                         <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${client.status === "Active" ? "bg-emerald-500/10 text-emerald-400" :
@@ -215,8 +215,8 @@ export default function Dashboard() {
                                             {client.status}
                                         </span>
                                     </td>
-                                    <td className="px-8 py-5 font-bold text-white">{client.revenue}</td>
-                                    <td className="px-8 py-5 text-slate-400 text-sm font-medium">{client.date}</td>
+                                    <td className="px-8 py-5 font-bold text-gray-900 dark:text-white">{client.revenue}</td>
+                                    <td className="px-8 py-5 text-gray-500 dark:text-slate-400 text-sm font-medium">{client.date}</td>
                                 </tr>
                             ))}
                         </tbody>
